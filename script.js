@@ -6,34 +6,34 @@ class Calculator{
     }
 
     clear(){
-        this.currentOpperand = '';
-        this.previousOpperand = '';
+        this.currentOperand = '';
+        this.previousOperand = '';
         this.operation = undefined;
     }
 
     delete(){
-        this.currentOpperand = this.currentOpperand.toString().slice(0,-1);
+        this.currentOperand = this.currentOperand.toString().slice(0,-1);
     }
 
     appendNumber(number){
-        if(number === '.' && this.currentOpperand.includes('.')) return;
-        this.currentOpperand = this.currentOpperand.toString() + number.toString();
+        if(number === '.' && this.currentOperand.includes('.')) return;
+        this.currentOperand = this.currentOperand.toString() + number.toString();
     }
 
     chooseOperation(operation){
-        if(this.currentOpperand === '') return;
-        if(this.previousOpperand !== ''){
+        if(this.currentOperand === '') return;
+        if(this.previousOperand !== ''){
             this.compute();
         }
         this.operation = operation;
-        this.previousOpperand = this.currentOpperand;
-        this.currentOpperand = '';
+        this.previousOperand = this.currentOperand;
+        this.currentOperand = '';
     }
 
     compute(){
         let computation;
-        const prev = parseFloat(this.previousOpperand);
-        const current = parseFloat(this.currentOpperand);
+        const prev = parseFloat(this.previousOperand);
+        const current = parseFloat(this.currentOperand);
 
         if(isNaN(prev) || isNaN(current)) return;
 
@@ -53,9 +53,9 @@ class Calculator{
             default:
                 return;
         }
-        this.currentOpperand = computation;
+        this.currentOperand = computation;
         this.operation = undefined;
-        this.previousOpperand = '';
+        this.previousOperand = '';
     }
 
     getDisplayNumber(number){
@@ -78,9 +78,9 @@ class Calculator{
     }
 
     updateDisplay(){
-        this.currentOperandTextElement.innerText = this.getDisplayNumber(this.currentOpperand);
+        this.currentOperandTextElement.innerText = this.getDisplayNumber(this.currentOperand);
         if(this.operation != null){
-            this.previousOperandTextElement.innerText = `${this.previousOpperand} ${this.operation}`;
+            this.previousOperandTextElement.innerText = `${this.previousOperand} ${this.operation}`;
         }else{
             this.previousOperandTextElement.innerText = '';
         }
