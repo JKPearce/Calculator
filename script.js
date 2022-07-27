@@ -48,8 +48,15 @@ class Calculator{
                 computation = prev * current;
                 break;
             case '/':
-                computation = prev / current;
-                break;
+                if(prev === 0 || current === 0){
+                    alert("You are not allowed to divide by 0");
+                    computation = 0;
+                    break;
+                }else{
+                    computation = prev / current;
+                    break;
+                }
+                
             default:
                 return;
         }
