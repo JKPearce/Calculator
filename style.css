@@ -32,8 +32,21 @@ body{
     border: 2px black solid;
     border-radius: 5px;
     padding: 10px 20px;
-    min-height: 50px;
-    font-size: 40px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.previous-operand{
+    font-size: 1.5rem;
+    min-height: 32px;
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.current-operand{
+    font-size: 2.5rem;
+    min-height: 64px;
+    color: rgba(0, 0, 0, 1);
 }
 
 .span-2{
@@ -77,4 +90,8 @@ button:hover{
 .calc-operators button{
     background-color: lightgray;
     font-weight: bold;
+}
+
+.calc-operators button:hover{
+    background-color: lightyellow;
 }

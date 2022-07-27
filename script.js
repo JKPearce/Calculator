@@ -1,82 +1,129 @@
-//this is used to change the display number and get the user input number
+class Calculator{
+    constructor(previousOperandTextElement,currentOperandTextElement){
+        this.previousOperandTextElement = previousOperandTextElement;
+        this.currentOperandTextElement = currentOperandTextElement;
+        this.clear();
+    }
+
+    clear(){
+        this.currentOpperand = '';
+        this.previousOpperand = '';
+        this.operation = undefined;
+    }
+
+    delete(){
+        this.currentOpperand = this.currentOpperand.toString().slice(0,-1);
+    }
+
+    appendNumber(number){
+        if(number === '.' && this.currentOpperand.includes('.')) return;
+        this.currentOpperand = this.currentOpperand.toString() + number.toString();
+    }
+
+    chooseOperation(operation){
+        if(this.currentOpperand === '') return;
+        if(this.previousOpperand !== ''){
+            this.compute();
+        }
+        this.operation = operation;
+        this.previousOpperand = this.currentOpperand;
+        this.currentOpperand = '';
+    }
+
+    compute(){
+        let computation;
+        const prev = parseFloat(this.previousOpperand);
+        const current = parseFloat(this.currentOpperand);
+
+        if(isNaN(prev) || isNaN(current)) return;
+
+        switch(this.operation){
+            case '+':
+                computation = prev + current;
+                break;
+            case '-':
+                computation = prev - current;
+                break;
+            case '*':
+                computation = prev * current;
+                break;
+            case '/':
+                computation = prev / current;
+                break;
+            default:
+                return;
+        }
+        this.currentOpperand = computation;
+        this.operation = undefined;
+        this.previousOpperand = '';
+    }
+
+    getDisplayNumber(number){
+        const stringNumber = number.toString();
+        const integerDigits = parseFloat(stringNumber.split('.')[0]);
+        const decimalDigits = stringNumber.split('.')[1];
+        let integerDisplay;
+        if(isNaN(integerDigits)) {
+            integerDisplay = '';
+        }else{
+            integerDisplay = integerDigits.toLocaleString('en', {
+                maximumFractionDigits: 0
+            });
+        }
+        if(decimalDigits != null){
+            return `${integerDisplay}.${decimalDigits}`;
+        }else{
+            return integerDisplay;
+        }
+    }
+
+    updateDisplay(){
+        this.currentOperandTextElement.innerText = this.getDisplayNumber(this.currentOpperand);
+        if(this.operation != null){
+            this.previousOperandTextElement.innerText = `${this.previousOpperand} ${this.operation}`;
+        }else{
+            this.previousOperandTextElement.innerText = '';
+        }
+         
+    }
+}
+
 const displayNumber = document.querySelector('.calc-display');
-
-//every time you click a number call updatedisplay which concatenates text to display number
-const numbers = Array.from(document.querySelectorAll(".numbers"));
-numbers.forEach(number => number.addEventListener('click', updateDisplay));
-
-//clears all saved variables to default
+const numberButtons = Array.from(document.querySelectorAll(".numbers"));
+const operationButtons = Array.from(document.querySelectorAll('.operators'));
 const clearButton = document.querySelector('.clear');
-clearButton.addEventListener('click', clearDisplay);
-
-//when selecting an operation, save selection and first number
-const operators = Array.from(document.querySelectorAll('.operators'));
-operators.forEach(operation => operation.addEventListener('click', selectOperator));
-
-//when click equals saves second number and runs operate
 const equalsButton = document.querySelector('.equals');
-equalsButton.addEventListener('click', selectEquals);
+const deleteButton = document.querySelector('.delete');
+const previousOperandTextElement = document.querySelector('.previous-operand');
+const currentOperandTextElement = document.querySelector('.current-operand');
 
-//vars that get changed depending on user inputs
-let firstNumber = 0;
-let secondNumber = 0;
-let selectedOperation = "";
+const calculator = new Calculator(previousOperandTextElement,currentOperandTextElement);
 
-function selectEquals(){
-    //save the users input as a float value to be used in calculations
-    secondNumber = parseFloat(displayNumber.textContent);
-    //update display to the output of user selected operation
-    displayNumber.textContent = operate(selectedOperation, firstNumber, secondNumber);
-}
+numberButtons.forEach(button => {
+    button.addEventListener('click', () =>{
+        calculator.appendNumber(button.innerText);
+        calculator.updateDisplay();
+    })
+});
 
-function selectOperator(){
-    firstNumber = parseFloat(displayNumber.textContent);
-    selectedOperation = this.classList[1];
-    displayNumber.textContent = 0;
-}
+operationButtons.forEach(button => {
+    button.addEventListener('click', () =>{
+        calculator.chooseOperation(button.innerText);
+        calculator.updateDisplay();
+    })
+});
 
-function clearDisplay(){
-    firstNumber = 0;
-    secondNumber = 0;
-    selectedOperation = "";
-    displayNumber.textContent = 0;
-}
+equalsButton.addEventListener('click', button => {
+    calculator.compute();
+    calculator.updateDisplay();
+});
 
-function updateDisplay(e){
-    //remove the placeholder 0 in display
-    if(displayNumber.textContent == 0){
-        displayNumber.textContent = "";
-    }
+clearButton.addEventListener('click', button => {
+    calculator.clear();
+    calculator.updateDisplay();
+});
 
-    //concatenate the text from the button user clicked on
-    displayNumber.textContent = displayNumber.textContent + this.textContent;
-}
-
-function add(a, b){
-    return a + b;
-}
-
-function subtract(a, b){
-    return a - b;
-}
-
-function multiply(a, b){
-    return a * b;
-}
-
-function divide(a, b){
-    return a / b;
-}
-
-function operate(operator, number1, number2){
-    switch(operator){
-        case "add":
-            return add(number1, number2);
-        case "subtract":
-            return subtract(number1, number2);
-        case "multiply":
-            return multiply(number1, number2);
-        case "divide":
-            return divide(number1, number2);
-    }
-}
+deleteButton.addEventListener('click', button => {
+    calculator.delete();
+    calculator.updateDisplay();
+});
