@@ -106,6 +106,29 @@ const currentOperandTextElement = document.querySelector('.current-operand');
 
 const calculator = new Calculator(previousOperandTextElement,currentOperandTextElement);
 
+//keyboard support
+document.addEventListener('keydown',(event) => {
+    if(event.key === "1"){calculator.appendNumber(1);}
+    if(event.key === "2"){calculator.appendNumber(2);}
+    if(event.key === "3"){calculator.appendNumber(3);}
+    if(event.key === "4"){calculator.appendNumber(4);}
+    if(event.key === "5"){calculator.appendNumber(5);}
+    if(event.key === "6"){calculator.appendNumber(6);}
+    if(event.key === "7"){calculator.appendNumber(7);}
+    if(event.key === "8"){calculator.appendNumber(8);}
+    if(event.key === "9"){calculator.appendNumber(9);}
+    if(event.key === "0"){calculator.appendNumber(0);}
+    if(event.key === "."){calculator.appendNumber(".");}
+    if(event.key === "+"){calculator.chooseOperation("+");}
+    if(event.key === "/"){calculator.chooseOperation("/");}
+    if(event.key === "*"){calculator.chooseOperation("*");}
+    if(event.key === "-"){calculator.chooseOperation("-");}
+    if(event.key === "Enter"){calculator.compute();}
+    if(event.key === "Backspace"){calculator.delete();}
+    if(event.key === "Delete"){calculator.delete();}
+    calculator.updateDisplay();
+})
+
 numberButtons.forEach(button => {
     button.addEventListener('click', () =>{
         calculator.appendNumber(button.innerText);
