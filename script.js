@@ -1,3 +1,17 @@
+const numbers = Array.from(document.querySelectorAll(".numbers"));
+numbers.forEach(number => number.addEventListener('click', updateDisplay));
+
+const displayNumber = document.querySelector('.calc-display');
+
+function updateDisplay(e){
+    //remove the placeholder 0 in display
+    if(displayNumber.textContent == 0){
+        displayNumber.textContent = "";
+    }
+
+    displayNumber.textContent = displayNumber.textContent + this.textContent;
+}
+
 function add(a, b){
     return a + b;
 }
