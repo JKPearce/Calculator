@@ -1,7 +1,15 @@
 const numbers = Array.from(document.querySelectorAll(".numbers"));
 numbers.forEach(number => number.addEventListener('click', updateDisplay));
 
+const clearButton = document.querySelector('.clear');
+clearButton.addEventListener('click', clearCalc);
+
 const displayNumber = document.querySelector('.calc-display');
+
+
+function clearCalc(){
+    displayNumber.textContent = 0;
+}
 
 function updateDisplay(e){
     //remove the placeholder 0 in display
